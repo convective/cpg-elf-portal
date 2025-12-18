@@ -1,0 +1,21 @@
+{
+  "name": "cpg-demo",
+  "version": "1.0.0",
+  "description": "Christmas Production Group - Elf & Safety Coverage Portal",
+  "type": "module",
+  "scripts": {
+    "start": "tsx api.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "hono": "^4.6.0",
+    "@hono/node-server": "^1.13.0",
+    "serve-static": "^1.16.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "@types/node": "^22.0.0",
+    "vitest": "^2.1.0",
+    "@playwright/test": "^1.48.0"
+  }
+}

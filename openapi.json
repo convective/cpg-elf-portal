@@ -1,0 +1,80 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CPG Premium Calculator API",
+    "description": "Christmas Production Group - Worker's Comp & Liability Premium Calculator",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/calculate-premium": {
+      "get": {
+        "summary": "Calculate insurance premium",
+        "description": "Calculates the monthly insurance premium based on risk score and optional promo code",
+        "operationId": "calculatePremium",
+        "parameters": [
+          {
+            "name": "riskScore",
+            "in": "query",
+            "description": "The hazard quota / risk score for the worker",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 1000
+            }
+          },
+          {
+            "name": "promoCode",
+            "in": "query",
+            "description": "Union discount code (e.g., SAFE_ELF)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Premium calculation result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "basePremium": {
+                      "type": "number",
+                      "description": "Base premium amount (equals risk score)"
+                    },
+                    "discount": {
+                      "type": "number",
+                      "description": "Discount amount applied"
+                    },
+                    "promoCode": {
+                      "type": "string",
+                      "description": "Promo code that was applied"
+                    },
+                    "finalPremium": {
+                      "type": "number",
+                      "description": "Final premium after discount"
+                    }
+                  }
+                },
+                "example": {
+                  "basePremium": 1000,
+                  "discount": 200,
+                  "promoCode": "SAFE_ELF",
+                  "finalPremium": -800
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

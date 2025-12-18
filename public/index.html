@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPG: Elf &amp; Safety Coverage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .hazard-border {
+      background: repeating-linear-gradient(
+        45deg,
+        #facc15,
+        #facc15 10px,
+        #1e293b 10px,
+        #1e293b 20px
+      );
+      padding: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen">
+  <!-- Header -->
+  <header class="bg-slate-800 text-white py-6 shadow-lg">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-3xl font-bold tracking-tight">
+        <span class="text-green-400">CPG</span> | Christmas Production Group
+      </h1>
+      <p class="text-slate-400 mt-1">Worker&apos;s Comp &amp; Liability Portal</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <div class="hazard-border rounded-lg">
+      <div class="bg-white rounded-md p-8">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">Premium Calculator</h2>
+
+        <!-- Risk Score Input -->
+        <div class="mb-6">
+          <label for="riskScore" class="block text-sm font-semibold text-slate-700 mb-2">
+            Enter Hazard Quota
+          </label>
+          <input
+            type="number"
+            id="riskScore"
+            value="1000"
+            class="w-full px-4 py-3 border-2 border-slate-300 rounded-lg focus:border-yellow-400 focus:outline-none text-lg"
+            placeholder="Risk Score"
+          >
+        </div>
+
+        <!-- Promo Code Input -->
+        <div class="mb-6">
+          <label for="promoCode" class="block text-sm font-semibold text-slate-700 mb-2">
+            Union Code
+          </label>
+          <input
+            type="text"
+            id="promoCode"
+            value="SAFE_ELF"
+            class="w-full px-4 py-3 border-2 border-slate-300 rounded-lg focus:border-yellow-400 focus:outline-none text-lg font-mono"
+            placeholder="Enter promo code"
+          >
+        </div>
+
+        <!-- Calculate Button -->
+        <button
+          id="calculateBtn"
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg text-lg transition-colors shadow-md"
+        >
+          Calculate Monthly Premium
+        </button>
+
+        <!-- Result Display -->
+        <div id="result" class="mt-8 p-6 bg-slate-50 rounded-lg border-2 border-slate-200 hidden">
+          <div class="text-center">
+            <p class="text-slate-600 text-sm uppercase tracking-wide mb-2">Total Due</p>
+            <p id="premiumAmount" class="text-4xl font-bold text-slate-800">$0</p>
+          </div>
+          <div id="breakdown" class="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-600">
+            <!-- Breakdown will be populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-800 text-slate-400 py-4 mt-auto">
+    <div class="max-w-4xl mx-auto px-4 text-center text-sm">
+      CPG is a wholly owned subsidiary of North Pole Industries.
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("calculateBtn").addEventListener("click", async () => {
+      const riskScore = document.getElementById("riskScore").value;
+      const promoCode = document.getElementById("promoCode").value;
+
+      const response = await fetch(`/calculate-premium?riskScore=${riskScore}&promoCode=${encodeURIComponent(promoCode)}`);
+      const data = await response.json();
+
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("premiumAmount").textContent = `$${data.finalPremium}`;
+
+      // Color the amount based on whether CPG owes money (negative = bad for CPG!)
+      const amountEl = document.getElementById("premiumAmount");
+      if (data.finalPremium < 0) {
+        amountEl.classList.add("text-red-600");
+        amountEl.classList.remove("text-slate-800", "text-green-600");
+      } else {
+        amountEl.classList.add("text-slate-800");
+        amountEl.classList.remove("text-red-600", "text-green-600");
+      }
+
+      document.getElementById("breakdown").innerHTML = `
+        <div class="flex justify-between mb-1">
+          <span>Base Premium:</span>
+          <span class="font-mono">$${data.basePremium}</span>
+        </div>
+        <div class="flex justify-between mb-1">
+          <span>Discount${data.promoCode ? ` (${data.promoCode})` : ""}:</span>
+          <span class="font-mono text-green-600">-$${data.discount}</span>
+        </div>
+        <div class="flex justify-between font-bold border-t border-slate-300 pt-2 mt-2">
+          <span>Final Premium:</span>
+          <span class="font-mono">$${data.finalPremium}</span>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
