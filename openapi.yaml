@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: Gift Wrapping API
+  description: Christmas Present Group (CPG) price calculation API for custom gift wrapping services.
+  version: 1.0.0
+  contact:
+    name: CPG Engineering
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /api/calculate-price:
+    get:
+      summary: Calculate gift wrapping price
+      description: |
+        Calculates the final gift wrapping price based on a base price amount and optional promo code.
+        Promo codes can reduce the final price by a fixed discount amount.
+      operationId: calculatePrice
+      tags:
+        - Pricing
+      parameters:
+        - name: price
+          in: query
+          description: The base price amount in dollars (Small=$15, Medium=$25, Large=$40)
+          required: false
+          schema:
+            type: number
+            default: 25
+            example: 25
+        - name: promoCode
+          in: query
+          description: Optional promotional code for discounts (e.g., SANTA for $10 off)
+          required: false
+          schema:
+            type: string
+            example: SANTA
+      responses:
+        '200':
+          description: Price calculation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponse'
+              examples:
+                withPromoCode:
+                  summary: With SANTA promo code
+                  value:
+                    basePrice: 25
+                    discount: 10
+                    promoCode: SANTA
+                    finalPrice: 15
+                withoutPromoCode:
+                  summary: Without promo code
+                  value:
+                    basePrice: 25
+                    discount: 0
+                    promoCode: ""
+                    finalPrice: 25
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      required:
+        - basePrice
+        - discount
+        - promoCode
+        - finalPrice
+      properties:
+        basePrice:
+          type: number
+          description: The base gift wrapping price before discounts
+          example: 25
+        discount:
+          type: number
+          description: The discount amount applied (0 if no valid promo code)
+          example: 10
+        promoCode:
+          type: string
+          description: The promo code that was applied (empty string if none)
+          example: SANTA
+        finalPrice:
+          type: number
+          description: The final price after discounts (basePrice - discount)
+          example: 15

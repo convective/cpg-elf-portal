@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__jira__search",
+      "mcp__jira__atlassianUserInfo",
+      "mcp__jira__getAccessibleAtlassianResources",
+      "mcp__jira__searchJiraIssuesUsingJql",
+      "mcp__jira__getVisibleJiraProjects",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "mcp__jira__getTransitionsForJiraIssue",
+      "mcp__jira__transitionJiraIssue",
+      "mcp__jira__addCommentToJiraIssue",
+      "Bash(timeout 15 npm run dev:*)",
+      "Bash(git rm:*)",
+      "mcp__jira__getJiraIssue",
+      "Bash(BASE_URL=http://localhost:3001 npx playwright test:*)",
+      "Bash(BASE_URL=http://localhost:3000 npx playwright test:*)",
+      "Bash(claude mcp add:*)",
+      "Bash(claude mcp list:*)",
+      "mcp__openapi__calculate-price",
+      "Bash(security find-generic-password -s \"atlassian\" -a \"\")",
+      "Bash(git check-ignore:*)"
+    ]
+  }
+}

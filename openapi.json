@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "CPG Premium Calculator API",
-    "description": "Christmas Production Group - Worker's Comp & Liability Premium Calculator",
+    "title": "CPG Gift Wrapping API",
+    "description": "Christmas Present Group - Custom Gift Wrapping Price Calculator",
     "version": "1.0.0"
   },
   "servers": [
@@ -12,26 +12,26 @@
     }
   ],
   "paths": {
-    "/calculate-premium": {
+    "/api/calculate-price": {
       "get": {
-        "summary": "Calculate insurance premium",
-        "description": "Calculates the monthly insurance premium based on risk score and optional promo code",
-        "operationId": "calculatePremium",
+        "summary": "Calculate gift wrapping price",
+        "description": "Calculates the gift wrapping price based on gift size and optional promo code",
+        "operationId": "calculatePrice",
         "parameters": [
           {
-            "name": "riskScore",
+            "name": "price",
             "in": "query",
-            "description": "The hazard quota / risk score for the worker",
+            "description": "The base price for gift wrapping (Small=$15, Medium=$25, Large=$40)",
             "required": false,
             "schema": {
               "type": "number",
-              "default": 1000
+              "default": 25
             }
           },
           {
             "name": "promoCode",
             "in": "query",
-            "description": "Union discount code (e.g., SAFE_ELF)",
+            "description": "Discount code (e.g., SANTA for $10 off)",
             "required": false,
             "schema": {
               "type": "string"
@@ -40,15 +40,15 @@
         ],
         "responses": {
           "200": {
-            "description": "Premium calculation result",
+            "description": "Price calculation result",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "basePremium": {
+                    "basePrice": {
                       "type": "number",
-                      "description": "Base premium amount (equals risk score)"
+                      "description": "Base price amount"
                     },
                     "discount": {
                       "type": "number",
@@ -58,17 +58,17 @@
                       "type": "string",
                       "description": "Promo code that was applied"
                     },
-                    "finalPremium": {
+                    "finalPrice": {
                       "type": "number",
-                      "description": "Final premium after discount"
+                      "description": "Final price after discount"
                     }
                   }
                 },
                 "example": {
-                  "basePremium": 1000,
-                  "discount": 200,
-                  "promoCode": "SAFE_ELF",
-                  "finalPremium": -800
+                  "basePrice": 25,
+                  "discount": 10,
+                  "promoCode": "SANTA",
+                  "finalPrice": -15
                 }
               }
             }
