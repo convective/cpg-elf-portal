@@ -24,7 +24,7 @@ Reset the CPG demo to its initial buggy state for demonstration purposes.
 
 3. **Delete all comments on EP-1**:
 
-   - Use the Jira API to retrieve and delete all comments on ticket EP-1
+   - Use the Jira MCP tool to retrieve and delete all comments on ticket EP-1
    - This cleans up any resolution comments from previous demo runs
 
 4. **Commit the buggy code** to develop branch with message:
